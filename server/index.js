@@ -9,7 +9,24 @@ const historyRoutes = require("./routes/history");
 
 const app = express();
 
-app.use(cors({ origin: ["http://localhost:5173","https://skysense-5evm.onrender.com/"], credentials: true }));
+const allowedOrigins = [
+  /^http:\/\/localhost:\d+$/,           // any localhost port (dev)
+  /^https:\/\/[\w-]+\.vercel\.app$/,    // any *.vercel.app deployment
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (e.g. Render health checks, curl)
+      if (!origin) return callback(null, true);
+      const allowed = allowedOrigins.some((pattern) => pattern.test(origin));
+      if (allowed) return callback(null, true);
+      callback(new Error(`CORS blocked: ${origin}`));
+    },
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 // Routes
