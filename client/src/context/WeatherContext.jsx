@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback } from "react";
-import axios from "axios";
+import { weatherAPI, historyAPI } from "../utils/api";
 
 const WeatherContext = createContext(null);
 
@@ -20,27 +20,35 @@ export function WeatherProvider({ children }) {
         params = { lat: cityOrCoords.lat, lon: cityOrCoords.lon };
       }
 
-      const res = await axios.get("/api/weather", { params });
+      const res = await weatherAPI.get(params);
       setWeatherData(res.data);
       setCurrentCity(res.data.city);
 
-      // Save to history
-      await axios.post("/api/history", {
-        city: res.data.city,
-        country: res.data.country,
-        lat: res.data.coord?.lat,
-        lon: res.data.coord?.lon,
-        weatherSnapshot: {
-          temp: res.data.current.temp,
-          description: res.data.current.description,
-          humidity: res.data.current.humidity,
-          icon: res.data.current.icon,
-        },
-      });
+      // Save to history (fire-and-forget, don't block weather display)
+      historyAPI
+        .add({
+          city: res.data.city,
+          country: res.data.country,
+          lat: res.data.coord?.lat,
+          lon: res.data.coord?.lon,
+          weatherSnapshot: {
+            temp: res.data.current.temp,
+            description: res.data.current.description,
+            humidity: res.data.current.humidity,
+            icon: res.data.current.icon,
+          },
+        })
+        .catch(() => {}); // silently ignore history errors
 
       return res.data;
     } catch (err) {
-      const msg = err.response?.data?.error || "Failed to fetch weather";
+      // Safely extract a string error message (never set an object as error)
+      const msg =
+        typeof err.response?.data?.error === "string"
+          ? err.response.data.error
+          : typeof err.message === "string"
+          ? err.message
+          : "Failed to fetch weather";
       setError(msg);
       return null;
     } finally {

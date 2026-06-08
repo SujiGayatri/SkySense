@@ -9,7 +9,7 @@ const historyRoutes = require("./routes/history");
 
 const app = express();
 
-app.use(cors({ origin: ["http://localhost:5173","https://skysense-abc.vercel.app"], credentials: true }));
+app.use(cors({ origin: ["http://localhost:5173","https://sky-sense-ixes.vercel.app"], credentials: true }));
 app.use(express.json());
 
 // Routes
