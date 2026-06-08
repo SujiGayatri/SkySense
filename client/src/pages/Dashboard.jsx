@@ -49,7 +49,7 @@ export default function Dashboard() {
       <div style={{ marginBottom: 24 }}>
         <h2 style={{ fontSize: 24, fontWeight: 700 }}>
           {getGreeting()},{" "}
-          <span style={{ color: "var(--teal-dark)" }}>Aditya!</span> <FontAwesomeIcon
+          <span style={{ color: "var(--teal-dark)" }}></span> <FontAwesomeIcon
   icon={faSun}
   style={{
     color: "#f59e0b",
