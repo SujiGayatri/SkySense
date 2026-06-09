@@ -11,6 +11,15 @@ import {
   faCity,
   faDroplet,
   faChevronRight,
+  faSun,
+  faMoon,
+  faCloud,
+  faCloudSun,
+  faCloudMoon,
+  faCloudRain,
+  faBolt,
+  faSnowflake,
+  faSmog,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function History() {
@@ -18,6 +27,34 @@ export default function History() {
   const [loading, setLoading] = useState(true);
   const { fetchWeather } = useWeather();
   const navigate = useNavigate();
+  const WEATHER_ICONS = {
+  "01d": faSun,
+  "01n": faMoon,
+
+  "02d": faCloudSun,
+  "02n": faCloudMoon,
+
+  "03d": faCloud,
+  "03n": faCloud,
+
+  "04d": faCloud,
+  "04n": faCloud,
+
+  "09d": faCloudRain,
+  "09n": faCloudRain,
+
+  "10d": faCloudRain,
+  "10n": faCloudRain,
+
+  "11d": faBolt,
+  "11n": faBolt,
+
+  "13d": faSnowflake,
+  "13n": faSnowflake,
+
+  "50d": faSmog,
+  "50n": faSmog,
+};
 
   useEffect(() => {
     loadHistory();
@@ -86,9 +123,13 @@ export default function History() {
               onClick={() => handleOpen(item.city)}
             >
               <span className="history-icon">
-                {item.weatherSnapshot?.icon
-                  ? owmIconToEmoji(item.weatherSnapshot.icon)
-                  : <FontAwesomeIcon icon={faCity} />}
+                 {item.weatherSnapshot?.icon ? (
+    <FontAwesomeIcon
+      icon={WEATHER_ICONS[item.weatherSnapshot.icon] || faCloud}
+    />
+  ) : (
+    <FontAwesomeIcon icon={faCity} />
+  )}
               </span>
               <div>
                 <div className="history-city">{item.city}</div>
@@ -110,7 +151,7 @@ export default function History() {
                   </div>
                 </div>
               )}
-              <span style={{ color: "var(--text-muted)", fontSize: 18 }}>›</span>
+              <span style={{ color: "var(--text-muted)", fontSize: 18 }}><FontAwesomeIcon icon={faChevronRight} /></span>
             </div>
           ))}
         </div>
