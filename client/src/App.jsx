@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import Favorites from "./pages/Favorites";
 import Alerts from "./pages/Alerts";
 import History from "./pages/History";
+import AIChat from "./pages/AIChat";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
             <Route path="/favorites" element={<Favorites />} />
             <Route path="/alerts" element={<Alerts />} />
             <Route path="/history" element={<History />} />
+            <Route path="/ai-chat" element={<AIChat />} />
           </Routes>
         </Layout>
       </WeatherProvider>
