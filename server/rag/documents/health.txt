@@ -1,0 +1,8 @@
+High UV index can cause skin damage and eye irritation.
+
+UV 0-2: Low risk
+UV 3-5: Moderate
+UV 6-7: High
+UV 8-10: Very high
+
+People should wear SPF 50 sunscreen, sunglasses, and avoid prolonged exposure during noon.
