@@ -1,4 +1,5 @@
-const axios = require("axios");
+// const axios = require("axios");
+import axios from "axios";
 
 // ─── Open-Meteo endpoints (100% free, no API key, forever) ───────────────────
 const GEO_URL = "https://geocoding-api.open-meteo.com/v1/search";
@@ -251,7 +252,7 @@ function processDailyForecast(daily) {
 
 // ─── Main Controller ──────────────────────────────────────────────────────────
 
-exports.getWeather = async (req, res) => {
+export const getWeather = async (req, res) => {
   let { city, lat, lon } = req.query;
 
   if (!city && (!lat || !lon)) {
@@ -329,3 +330,34 @@ exports.getWeather = async (req, res) => {
     res.status(status).json({ error: message });
   }
 };
+
+export async function getWeatherByCity(city) {
+  const geo = await geocodeCity(city);
+
+  const { forecast, air } = await fetchWeatherData(
+    geo.lat,
+    geo.lon,
+    geo.timezone
+  );
+
+  const c = forecast.current;
+  const { desc, icon } = wmoToDescription(c.weather_code);
+
+  return {
+    city: geo.name,
+    country: geo.country,
+    current: {
+      temp: Math.round(c.temperature_2m),
+      feelsLike: Math.round(c.apparent_temperature),
+      humidity: c.relative_humidity_2m,
+      windSpeed: Math.round(c.wind_speed_10m),
+      description: desc,
+      icon,
+      uvIndex: Math.round(c.uv_index || 0),
+      rainChance: c.precipitation_probability || 0,
+      aqi: air?.current?.us_aqi || null,
+      pm25: air?.current?.pm2_5 || null,
+    },
+    forecast: processDailyForecast(forecast.daily),
+  };
+}

@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-
+// const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const favoriteSchema = new mongoose.Schema(
   {
     city: { type: String, required: true, trim: true },
@@ -13,4 +13,5 @@ const favoriteSchema = new mongoose.Schema(
 
 favoriteSchema.index({ city: 1, userId: 1 }, { unique: true });
 
-module.exports = mongoose.model("Favorite", favoriteSchema);
+// module.exports = mongoose.model("Favorite", favoriteSchema);
+export default mongoose.model("Favorite", favoriteSchema);

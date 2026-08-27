@@ -1,0 +1,68 @@
+.chat-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+  align-items: flex-start;
+}
+
+.chat-row.user {
+  flex-direction: row-reverse;
+}
+
+.chat-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #eef7f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #007979;
+  flex-shrink: 0;
+}
+
+.chat-row.user .chat-avatar {
+  background: #007979;
+  color: white;
+}
+
+.chat-content {
+  max-width: 78%;
+}
+
+.chat-bubble {
+  background: white;
+  border: 1px solid #e6ecef;
+  padding: 14px 16px;
+  border-radius: 18px;
+  line-height: 1.6;
+  color: #334155;
+  box-shadow: 0 2px 8px rgba(0, 121, 121, 0.05);
+}
+
+.chat-row.user .chat-bubble {
+  background: linear-gradient(135deg, #007979, #24b1b1);
+  color: white;
+  border: none;
+}
+
+.chat-bubble p {
+  margin: 0;
+}
+
+.chat-sources {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.source-pill {
+  background: rgba(36, 177, 177, 0.12);
+  color: #007979;
+  border: 1px solid rgba(36, 177, 177, 0.25);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}

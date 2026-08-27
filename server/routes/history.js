@@ -1,6 +1,9 @@
-const express = require("express");
+// const express = require("express");
 const router = express.Router();
-const History = require("../models/History");
+// const History = require("../models/History");
+import express from "express";
+// import router from "express";
+import History from "../models/History.js";
 
 // GET history for user (last 20 unique cities)
 router.get("/", async (req, res) => {
@@ -62,4 +65,5 @@ router.delete("/", async (req, res) => {
   }
 });
 
-module.exports = router;
+// module.exports = router;
+export default router;

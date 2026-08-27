@@ -11,6 +11,7 @@ import {
   faLocationDot,
   faCloudSun,
   faXmark,
+  faRobot,
 } from "@fortawesome/free-solid-svg-icons";
 
 const NAV = [
@@ -18,6 +19,7 @@ const NAV = [
   { to: "/favorites", icon: <FontAwesomeIcon icon={faHeart} />, label: "Favorites" },
   { to: "/alerts", icon: <FontAwesomeIcon icon={faTriangleExclamation} />, label: "Alerts" },
   { to: "/history", icon: <FontAwesomeIcon icon={faClock} />, label: "History" },
+  { to: "/ai-chat", icon: <FontAwesomeIcon icon={faRobot} />, label: "AI Chat" },
 ];
 
 

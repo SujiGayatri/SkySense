@@ -1,11 +1,13 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-require("dotenv").config();
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+// require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
+import weatherRoutes from "./routes/weather.js";
+import favoritesRoutes from "./routes/favorites.js";
+import historyRoutes from "./routes/history.js";
 
-const weatherRoutes = require("./routes/weather");
-const favoritesRoutes = require("./routes/favorites");
-const historyRoutes = require("./routes/history");
 
 const app = express();
 

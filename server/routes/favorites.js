@@ -1,6 +1,8 @@
-const express = require("express");
+// const express = require("express");
 const router = express.Router();
-const Favorite = require("../models/Favorite");
+// const Favorite = require("../models/Favorite");
+import express from "express";
+import Favorite from "../models/Favorite.js";
 
 // GET all favorites for user
 router.get("/", async (req, res) => {
@@ -52,4 +54,5 @@ router.get("/check/:city", async (req, res) => {
   }
 });
 
-module.exports = router;
+// module.exports = router;
+export default router;
