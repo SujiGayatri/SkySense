@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "ingest": "node rag/ingest.js"
   },
   "dependencies": {
     "@chroma-core/default-embed": "^0.1.9",
