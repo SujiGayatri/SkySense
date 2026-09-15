@@ -40,7 +40,7 @@ export default function AIChat() {
     question: userText,
   });
 
-      const data = res.json();
+      const data = res.data();
 
       setMessages((prev) => [
         ...prev,
