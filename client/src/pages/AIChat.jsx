@@ -5,7 +5,7 @@ import { useWeather } from "../context/WeatherContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloudSun, faRobot } from "@fortawesome/free-solid-svg-icons";
 import ChatBubble from "../components/Chat/ChatBubble";
-import { ragAPI } from "../api/api";
+import { ragAPI } from "../utils/api";
 
 export default function AIChat() {
   const [question, setQuestion] = useState("");
