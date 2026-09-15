@@ -26,4 +26,8 @@ export const historyAPI = {
   clear: () => api.delete("/history"),
 };
 
+export const ragAPI = {
+  ask: (data) => api.post("/weather/ask", data),
+};
+
 export default api;

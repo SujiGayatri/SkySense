@@ -5,6 +5,7 @@ import { useWeather } from "../context/WeatherContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloudSun, faRobot } from "@fortawesome/free-solid-svg-icons";
 import ChatBubble from "../components/Chat/ChatBubble";
+import { ragAPI } from "../api/api";
 
 export default function AIChat() {
   const [question, setQuestion] = useState("");
@@ -34,16 +35,10 @@ export default function AIChat() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/weather/ask", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          city: currentCity,
-          question: userText,
-        }),
-      });
+      const response = await ragAPI.ask({
+    city: currentCity,
+    question: userText,
+  });
 
       const data = await res.json();
 
