@@ -15,8 +15,13 @@ ${JSON.stringify(context.current, null, 2)}
 ${JSON.stringify(context.forecast, null, 2)}
 
 WEATHER KNOWLEDGE:
-${context.knowledge.map(doc => `- ${doc}`).join("\n")}
-
+WEATHER KNOWLEDGE:
+${context.knowledge
+  .map(
+    doc =>
+      `- ${doc.document}\n  Source: ${doc.metadata?.source ?? "unknown"}`
+  )
+  .join("\n")}
 USER QUESTION:
 ${question}
 
