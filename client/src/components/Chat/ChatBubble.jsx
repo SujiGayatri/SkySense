@@ -19,7 +19,7 @@ export default function ChatBubble({ role, content, sources = [] }) {
           <ReactMarkdown>{content}</ReactMarkdown>
         </div>
 
-        {sources.length > 0 && (
+        {/* {sources.length > 0 && (
           <div className="chat-sources">
             {sources.map((src) => (
               <span key={src} className="source-pill">
@@ -27,7 +27,7 @@ export default function ChatBubble({ role, content, sources = [] }) {
               </span>
             ))}
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
