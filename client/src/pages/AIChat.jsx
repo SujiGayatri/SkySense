@@ -40,7 +40,7 @@ export default function AIChat() {
     question: userText,
   });
 
-      const data = res.data;
+      const data = res.json();
 
       setMessages((prev) => [
         ...prev,
@@ -50,7 +50,10 @@ export default function AIChat() {
           sources: data.sources || [],
         },
       ]);
-    } catch {
+    } catch (error) {
+      console.error("RAG API error:", error);
+      console.error("Error response:", error.response?.data);
+      console.error("Error status:", error.response?.status);
       setMessages((prev) => [
         ...prev,
         {
