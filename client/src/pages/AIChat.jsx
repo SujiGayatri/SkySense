@@ -35,7 +35,7 @@ export default function AIChat() {
     setLoading(true);
 
     try {
-      const response = await ragAPI.ask({
+      const res = await ragAPI.ask({
     city: currentCity,
     question: userText,
   });
