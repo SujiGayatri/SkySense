@@ -23,6 +23,7 @@ import {
 
 export default function CurrentWeather({ data }) {
   const [isFav, setIsFav] = useState(false);
+  const [isUpdatingFav, setIsUpdatingFav] = useState(false);
   const WEATHER_ICONS = {
   "01d": faSun,
   "01n": faMoon,
@@ -60,27 +61,32 @@ export default function CurrentWeather({ data }) {
   }, [data.city]);
 
   const toggleFav = async () => {
-  try {
-    if (isFav) {
-      await favoritesAPI.remove(data.city);
-      setIsFav(false);
-    } else {
-      await favoritesAPI.add({
-        city: data.city,
-        country: data.country,
-        lat: data.coord?.lat,
-        lon: data.coord?.lon,
-      });
+    if (isUpdatingFav) return;
 
-      setIsFav(true);
+    const nextIsFav = !isFav;
+    setIsFav(nextIsFav);
+    setIsUpdatingFav(true);
 
-      // notify other pages
+    try {
+      if (nextIsFav) {
+        await favoritesAPI.add({
+          city: data.city,
+          country: data.country,
+          lat: data.coord?.lat,
+          lon: data.coord?.lon,
+        });
+      } else {
+        await favoritesAPI.remove(data.city);
+      }
+
       window.dispatchEvent(new Event("favoritesUpdated"));
+    } catch (e) {
+      setIsFav(!nextIsFav);
+      console.error("Failed to update favorite", e);
+    } finally {
+      setIsUpdatingFav(false);
     }
-  } catch (e) {
-    console.error(e);
-  }
-};
+  };
 
   const { current } = data;
   const aqi = aqiInfo(current.aqi);
@@ -92,7 +98,13 @@ export default function CurrentWeather({ data }) {
           <div className="city-name">{data.city}{data.country ? `, ${data.country}` : ""}</div>
           <div className="city-date">{formatDate()}</div>
         </div>
-        <button className="heart-btn" onClick={toggleFav} title={isFav ? "Remove from favorites" : "Add to favorites"}>
+        <button
+          type="button"
+          className="heart-btn"
+          onClick={toggleFav}
+          disabled={isUpdatingFav}
+          title={isFav ? "Remove from favorites" : "Add to favorites"}
+        >
           <FontAwesomeIcon
   icon={faHeart}
   style={{

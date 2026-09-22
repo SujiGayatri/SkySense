@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useWeather } from "../context/WeatherContext";
 import CurrentWeather from "../components/Dashboard/CurrentWeather";
 import ForecastRow from "../components/Dashboard/ForecastRow";
@@ -15,24 +15,48 @@ import {
 
 export default function Dashboard() {
   const { weatherData, loading, fetchWeather } = useWeather();
+  const [slowLoad, setSlowLoad] = useState(false);
 
   // Load default city on first visit
   useEffect(() => {
     if (!weatherData) {
-      fetchWeather("Vijayawada");
+      // After 4 seconds of loading, show the wake-up message
+      const timer = setTimeout(() => setSlowLoad(true), 4000);
+      fetchWeather("Kakinada").finally(() => {
+        clearTimeout(timer);
+        setSlowLoad(false);
+      });
+      return () => clearTimeout(timer);
     }
   }, []);
 
-  if (loading) {
-    return (
-      <div className="loading-screen">
-        <div className="spinner" />
-        <p style={{ color: "var(--text-muted)", fontSize: 14 }}>
-          Fetching weather data...
-        </p>
-      </div>
-    );
-  }
+  if (loading && !weatherData) {
+  return (
+    <div className="loading-screen">
+      <div className="spinner" />
+      <p style={{ color: "var(--text-muted)", fontSize: 14 }}>
+        Fetching weather data...
+      </p>
+    </div>
+  );
+}
+  // if (loading) {
+  //   return (
+  //     <div className="loading-screen">
+  //       <div className="spinner" />
+  //       <p style={{ color: "var(--text-muted)", fontSize: 14, textAlign: "center", maxWidth: 300 }}>
+  //         {slowLoad
+  //           ? "☕ Waking up the server... first load takes ~30 seconds on free hosting. Hang tight!"
+  //           : "Fetching weather data..."}
+  //       </p>
+  //       {slowLoad && (
+  //         <p style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 8 }}>
+  //           This only happens once. Subsequent loads are instant.
+  //         </p>
+  //       )}
+  //     </div>
+  //   );
+  // }
 
   if (!weatherData) {
     return (
@@ -49,13 +73,13 @@ export default function Dashboard() {
       <div style={{ marginBottom: 24 }}>
         <h2 style={{ fontSize: 24, fontWeight: 700 }}>
           {getGreeting()},{" "}
-          <span style={{ color: "var(--teal-dark)" }}></span> <FontAwesomeIcon
-  icon={faSun}
-  style={{
-    color: "#f59e0b",
-    marginLeft: 6,
-  }}
-/>
+           <FontAwesomeIcon
+            icon={faSun}
+            style={{
+              color: "#f59e0b",
+              marginLeft: 6,
+            }}
+          />
         </h2>
         <p style={{ color: "var(--text-muted)", fontSize: 14, marginTop: 4 }}>
           Here's your weather overview

@@ -38,14 +38,43 @@ export default function Layout({ children }) {
 
   // Filter suggestions
   useEffect(() => {
-    if (query.length < 1) {
+    if (query.length < 2) {
       setSuggestions([]);
       return;
     }
-    const filtered = POPULAR_CITIES.filter((c) =>
-      c.toLowerCase().startsWith(query.toLowerCase())
-    );
-    setSuggestions(filtered.slice(0, 5));
+
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch(
+          // ✅ country_code=IN filters to India only — no more Arabic city names
+          `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=6&language=en&format=json&country_code=IN`
+        );
+        const data = await res.json();
+        const results = data.results || [];
+
+        // Deduplicate by lowercase name
+        const seen = new Set();
+        const unique = results
+          .filter((r) => {
+            const key = r.name.toLowerCase();
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+          })
+          .slice(0, 5)
+          .map((r) => ({
+            name: r.name,
+            state: r.admin1 || "",   // state name e.g. "Andhra Pradesh"
+            id: r.id,                // unique numeric id — no duplicate key error
+          }));
+
+        setSuggestions(unique);
+      } catch {
+        setSuggestions([]);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
   }, [query]);
 
   // Close on outside click
@@ -76,7 +105,7 @@ export default function Layout({ children }) {
       {/* Sidebar */}
       <aside className="sidebar">
         <div className="sidebar-logo">
-          <div className="logo-icon"><FontAwesomeIcon icon={faCloudSun} style={{color:"white"}}/></div>
+          <div className="logo-icon"><FontAwesomeIcon icon={faCloudSun} style={{ color: "white" }} /></div>
           <div className="logo-text">
             <h1>
               <span style={{ color: "var(--teal-dark)" }}>Sky</span>
@@ -120,11 +149,20 @@ export default function Layout({ children }) {
               <div className="search-suggestions">
                 {suggestions.map((s) => (
                   <div
-                    key={s}
+                    key={s.id}
                     className="suggestion-item"
-                    onMouseDown={() => handleSearch(s)}
+                    onMouseDown={() => handleSearch(s.name)}
                   >
-                    <FontAwesomeIcon icon={faLocationDot} />  {s}
+                    <FontAwesomeIcon
+                      icon={faLocationDot}
+                      style={{ marginRight: 8, color: "var(--teal-mid)" }}
+                    />
+                    {s.name}
+                    {s.state && (
+                      <span style={{ marginLeft: 6, fontSize: 11, color: "var(--text-muted)" }}>
+                        {s.state}
+                      </span>
+                    )}
                   </div>
                 ))}
               </div>

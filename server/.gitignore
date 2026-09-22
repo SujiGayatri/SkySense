@@ -25,6 +25,8 @@ build/
 .vscode/
 .idea/
 
+chroma-data/
+
 # OS files
 .DS_Store
 Thumbs.db
