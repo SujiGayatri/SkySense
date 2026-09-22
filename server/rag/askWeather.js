@@ -6,7 +6,8 @@ export async function askWeather(question, context) {
 
   const completion = await groq.chat.completions.create({
     model: "openai/gpt-oss-20b",
-    // temperature: 0.3,
+    temperature: 0.3,
+    max_tokens: 250,
     messages: [
       {
         role: "system",
